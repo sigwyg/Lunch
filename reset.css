@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+/* reset.css
+--------------------------------------------------------------
+
+:: CSS Index
+
+ 1 : Global Reset
+ 2 : for HTML5
+ 
+--------------------------------------------------------------
+
+2007.06.24 : designed by Sig.
+
+--------------------------------------------------------------
+
+
+/* Global Reset
+-------------------------------------------------------------- */
+
+body,div,pre,p,blockquote,
+form,fieldset,input,textarea,select,option,
+dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,
+table,th,td,embed,object {
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-style: normal;
+    font-weight: normal;
+}
+ 
+table        {border-spacing:0;}
+* html table {border-collapse:collapse;}
+*:first-child+html table {border-collapse:collapse;}
+
+table,th,td,img  {border:0;}
+caption,th       {text-align:left; font-weight:normal;}
+img,input        {vertical-align:middle;}
+ul               {list-style: disc;}
+q:before { content: '\201C'}
+q:after  {content:'\201D';}
+del      { opacity: 0.6; }
+
+/* for HTML5
+-------------------------------------------------------------- */
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+

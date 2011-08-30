@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.1">
+<link rel="stylesheet" href="./base.css" />
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]--> 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="./jsdeferred.jquery.js"></script>
+<script>
+$(function(){
+    lunch.getFlickrPhotoset();
+    
+    // mapSwitch
+    $("#mapSwitch li:first").bind('click',function(){ $("#GoogleMaps").show(); $("#FlickrPhotos").hide(); return false; });
+    $("#mapSwitch li:last") .bind('click',function(){ $("#GoogleMaps").hide(); $("#FlickrPhotos").show(); return false; });
+});
+
+//
+// 1. Get Flickr Photoset
+// 2. Set Data
+// 3. Append Photo-Cards
+// 4. preset Map-mode
+// 5. addEvents
+//
+// Docs: 
+//      http://www.flickr.com/services/api/
+//      https://github.com/cho45/jsdeferred
+//      http://code.google.com/intl/ja/apis/maps/documentation/javascript/basics.html
+
+var lunch = {
+    data: [],
+    iw: [],
+    api_key: '20323d0dcecbd6355010f69d2e341ea3',
+    setData: function(data){
+        $.each(data.photoset.photo, function(i, item){
+            lunch.data[i] = {
+                id        : item.id,
+                title     : item.title,
+                server    : item.server,
+                secret    : item.secret,
+                farm      : item.farm,
+                link      : 'http://www.flickr.com/photos/sigwyg20/' + item.id + '/',
+                imgSrc    : 'http://farm' + item.farm + '.static.flickr.com/' + item.server + '/' + item.id + '_' + item.secret,
+                latitude  : item.latitude,
+                longitude : item.longitude,
+                tags      : $.trim(item.tags.replace(/d3100/, ''))
+            };
+        });
+    },
+    getFlickrPhotoset: function(){
+        $.ajax({
+            type : 'GET',
+            url  : 'http://www.flickr.com/services/rest/?nojsoncallback=1',
+            data : {
+                format      : 'json',
+                method      : 'flickr.photosets.getPhotos',
+                api_key     : lunch.api_key,
+                user_id     : '12068798@N00',
+                sort        : 'date-posted-desc',
+                photoset_id : '72157627461006892',
+                extras      : "geo,tags",
+                per_page    : '30',
+            },
+            dataType : 'jsonp',
+            jsonp    : 'jsoncallback',
+            success  : function(data, dataType){ 
+                if (dataType == 'success') {
+                    lunch.setData(data);
+                    lunch.setPhotoCards();
+                    lunch.setGoogleMaps();
+                }
+            }
+        });
+    },
+    getPhotoInfo: function(i, item){
+        return $.ajax({
+            type : 'GET',
+            url  : 'http://www.flickr.com/services/rest/?nojsoncallback=1',
+            data : {
+                format   : 'json',
+                method   : 'flickr.photos.getInfo',
+                api_key  : lunch.api_key,
+                photo_id : item.id,
+                secret   : item.secret
+            },
+            dataType : 'jsonp',
+            jsonp    : 'jsoncallback',
+            success  : function(data, dataType){ 
+                if (dataType == 'success') {
+                    // console.log(data);
+                    // console.log(data.photo.description._content);
+                    // console.log(data.photo.tags.tag[0]._content);
+                    lunch.data[i].description = data.photo.description._content;
+                }
+            }
+        }) ;
+    },
+    setPhotoCards: function(){
+        // <article id="day1">
+        // <a href>
+        //     <h1>Shop name</h1>
+        //     <figure>
+        //         <img src="" />
+        //     </figure>
+        //     <p class="geo">35.674101</p>
+        // </a>
+        // </article>
+        $.each(lunch.data, function(i, item){
+            var article = $('<article/>',{id: "day" + i});
+            var link    = $('<a/>',{href: item.link}).appendTo(article);
+            var image   = $('<img/>',{src: item.imgSrc + "_m.jpg" }).appendTo(link);
+            var title   = $('<h1/>',{text: item.title}).appendTo(link);
+            var tags    = $('<p/>',{text: item.tags}).appendTo(link);
+            $('#FlickrPhotos').append(article);
+        });
+    },
+    //
+    // GoogleMaps
+    //
+    setGoogleMaps: function() {
+        var latlng = new google.maps.LatLng(35.670168, 139.708687);
+        var myOptions = {
+            zoom: 16,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("GoogleMaps"), myOptions);
+        var list = $("#mapItems");
+
+        // Set Markers
+        $.each(lunch.data, function(i, item){
+            var marker = new google.maps.Marker({
+                position : new google.maps.LatLng(item.latitude, item.longitude),
+                map      : map,
+                title    : item.title,
+                zindex   : i
+            });
+            
+            // Prepare infoWindow
+            lunch.getPhotoInfo(i,item)
+            .next(function () {
+                //console.log(item.description);
+                var infowindow = new google.maps.InfoWindow({ content: 
+                    '<div>'
+                    + '<h1><img src="' + item.imgSrc + '_m.jpg" alt="' + item.title + '" /></h1>'
+                    + '<ul>'
+                    + '<li>[' + item.tags + '] ' + item.title + '</li>'
+                    + '<li>' + item.description.replace(/^\([^)]{2,}?\)/,'') + '</li>'
+                    + '</ul>'
+                    + '</div>'
+                }); 
+                lunch.iw[i] = infowindow;
+                
+                // Popup infoWindow
+                google.maps.event.addListener(marker, 'click', function(){ 
+                    $.each(lunch.iw, function(i,item){ item.close() })
+                    infowindow.open(map,marker); 
+                });
+                
+                // Make List-items
+                var listItem = $("<li/>").appendTo(list);
+                var listLink = $("<a/>",{href:'',text: '[' + item.tags + '] ' + item.title})
+                    .appendTo(listItem)
+                    .bind('click',function(){
+                        $("#GoogleMaps").show(); 
+                        $("#FlickrPhotos").hide();
+                        $.each(lunch.iw, function(i,item){ item.close() })
+                        infowindow.open(map,marker);
+                        return false;
+                    });
+            })
+            .error(function(){
+                alert(e);
+            })
+
+            marker.setMap(map);
+        });
+    }
+    };
+
+
+</script>
+</head>
+<body class="">
+    <header>
+        <h1>原宿には飯屋がない（こともなかった）</h1>
+        <nav id="mapSwitch">
+            <ul>
+            <li><a href="">map</a></li>
+            <li><a href="">card</a></li>
+            </ul>
+        </nav>
+        <nav id="mapItems">
+            <ul></ul>
+        </nav>
+    </header>
+
+
+<!--: Start #contents -->
+    <div id="FlickrPhotos"></div>
+    <div id="GoogleMaps"></div>
+<!--: End #contents -->
+
+    <footer></footer>
+</body>
+</html>
+

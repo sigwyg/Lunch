@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+/* base.css
+--------------------------------------------------------------
+
+:: CSS Index
+
+ 1 : Global Reset
+ 2 : body
+   : link
+ 3 : general
+ 4 : usual classes
+
+ 
+--------------------------------------------------------------
+
+2010.08.04 : designed by Sig.
+
+-------------------------------------------------------------- */
+
+@import "reset.css";
+@import "layout.css";
+
+
+/* contents
+-------------------------------------------------------------- */
+
+
+@media screen and (max-width: 800px),
+       screen and (-webkit-min-device-pixel-ratio: 2),
+       screen and (-webkit-min-device-pixel-ratio: 1.5){
+
+    #wrapper {
+        width: 320px;
+    }
+    header {
+        float: none;
+        width: 320px;
+    }
+    header h1 {
+        width: 320px;
+    }
+    header h1 a {
+    }
+    header nav {
+        width: 320px;
+    }
+    header nav li a {
+        height: 3em;
+        width: 80px;
+    }
+    
+    #contents {
+        float: none;
+        margin-left: 0;
+        padding: 0px;
+    }
+    #contents article:target {
+        width: 320px;
+        
+    }
+    
+    footer {
+        color: #fcfaf2; /* Shironeri */
+        background: #0c0c0c; /* Ro */
+        padding: 1em;
+    }
+}
+
+
+
+
