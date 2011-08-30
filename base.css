@@ -30,43 +30,16 @@
        screen and (-webkit-min-device-pixel-ratio: 2),
        screen and (-webkit-min-device-pixel-ratio: 1.5){
 
-    #wrapper {
-        width: 320px;
+    #mapSwitch,#mapItems {
+        position: relative;
     }
-    header {
-        float: none;
-        width: 320px;
+    #FlickrPhotos {
+        margin: 0 auto;
     }
-    header h1 {
-        width: 320px;
+    #GoogleMaps {
+        width: 100%;
+        margin: 0 auto;
     }
-    header h1 a {
-    }
-    header nav {
-        width: 320px;
-    }
-    header nav li a {
-        height: 3em;
-        width: 80px;
-    }
-    
-    #contents {
-        float: none;
-        margin-left: 0;
-        padding: 0px;
-    }
-    #contents article:target {
-        width: 320px;
-        
-    }
-    
-    footer {
-        color: #fcfaf2; /* Shironeri */
-        background: #0c0c0c; /* Ro */
-        padding: 1em;
-    }
+
 }
-
-
-
 
