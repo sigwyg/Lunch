@@ -146,13 +146,16 @@ var lunch = {
             
             // Prepare infoWindow
             lunch.getPhotoInfo(i,item).next(function () {
+                var description = item.description.replace(/^\([^)]{2,}?\)/,'');
+                var desc = description.split('/');
+                if(desc[1]){ desc[0] = desc[0] + '</li><li>' + desc[1] }
                 var infowindow = new google.maps.InfoWindow({ 
                     content: 
                         '<div>'
                         + '<h1><img src="' + item.imgSrc + '_m.jpg" alt="' + item.title + '" /></h1>'
                         + '<ul>'
                         + '<li>[' + item.tags + '] ' + item.title + '</li>'
-                        + '<li>' + item.description.replace(/^\([^)]{2,}?\)/,'') + '</li>'
+                        + '<li>' + desc[0] + '</li>'
                         + '</ul>'
                         + '</div>',
                     maxWidth: 280
