@@ -17,8 +17,8 @@ $(function(){
     lunch.getFlickrPhotoset();
     
     // mapSwitch
-    $("#mapSwitch li:first").bind('click',function(){ scroll.leap('FlickrPhotos'); return false; });
-    $("#mapSwitch li:last") .bind('click',function(){ scroll.leap('GoogleMaps'); return false; });
+    $("#mapSwitch li:last").bind('click',function(){ scroll.leap('FlickrPhotos'); return false; });
+    $("#mapSwitch li:first").bind('click',function(){ scroll.leap('GoogleMaps'); return false; });
 });
 
 //
@@ -63,10 +63,10 @@ var lunch = {
                 method      : 'flickr.photosets.getPhotos',
                 api_key     : lunch.api_key,
                 user_id     : '12068798@N00',
-                sort        : 'date-posted-desc',
+                sort        : 'date-posted-asc',
                 photoset_id : '72157627461006892',
                 extras      : "geo,tags",
-                per_page    : '30',
+                per_page    : '50',
             },
             dataType : 'jsonp',
             jsonp    : 'jsoncallback',
@@ -193,11 +193,14 @@ var lunch = {
 </head>
 <body class="">
     <header>
-        <h1>原宿には飯屋がない（こともなかった）</h1>
+        <hgroup>
+            <h1>原宿には飯屋がない</h1>
+            <h2>（こともなかった）</h2>
+        </hgroup>
         <nav id="mapSwitch">
             <ul>
-            <li><a href="">card</a></li>
             <li><a href="">map</a></li>
+            <li><a href="">card</a></li>
             </ul>
         </nav>
         <nav id="mapItems">
@@ -208,8 +211,8 @@ var lunch = {
 
 <!--: Start #contents -->
     <div id="contents">
-        <div id="FlickrPhotos"></div>
         <div id="GoogleMaps"></div>
+        <div id="FlickrPhotos"></div>
     </div>
 <!--: End #contents -->
 
