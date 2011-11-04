@@ -54,23 +54,25 @@
         header hgroup {
             text-align: center;
             margin: 0 0 0 40px;
-            padding: 30px 0px;
+            padding: 20px 0px;
         }
         #mapSwitch:after {
             content: none;
+            width: 0;
         }
         #mapSwitch li:nth-child(1) {
-            width: 80px;
+            width: 70px;
         }
         #mapSwitch li a {
-            width: 80px;
+            width: 70px;
         }
         #contents {
-            width:245px;
-            margin: 0 0 0 100px;
+            width:240px;
+            margin: 0 0 0 80px;
         }
         #GoogleMaps {
-            width: 240px;
+            width: 230px;
+            height: 230px;
         }
 }
 
