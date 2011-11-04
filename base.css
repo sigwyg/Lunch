@@ -26,20 +26,51 @@
 -------------------------------------------------------------- */
 
 
-@media screen and (max-width: 800px),
+@media screen and (max-width: 1024px){
+
+        #contents {
+            width: 735px;
+        }
+        #GoogleMaps {
+            width: 720px;
+        }
+
+}
+
+@media screen and (max-width: 800px){
+
+        #contents {
+            width: 490px;
+        }
+        #GoogleMaps {
+            width: 485px;
+        }
+}
+
+@media screen and (max-width: 640px),
        screen and (-webkit-min-device-pixel-ratio: 2),
        screen and (-webkit-min-device-pixel-ratio: 1.5){
 
-    #mapSwitch,#mapItems {
-        position: relative;
-    }
-    #FlickrPhotos {
-        margin: 0 auto;
-    }
-    #GoogleMaps {
-        width: 100%;
-        margin: 0 auto;
-    }
-
+        header hgroup {
+            text-align: center;
+            margin: 0 0 0 40px;
+            padding: 30px 0px;
+        }
+        #mapSwitch:after {
+            content: none;
+        }
+        #mapSwitch li:nth-child(1) {
+            width: 80px;
+        }
+        #mapSwitch li a {
+            width: 80px;
+        }
+        #contents {
+            width:245px;
+            margin: 0 0 0 100px;
+        }
+        #GoogleMaps {
+            width: 240px;
+        }
 }
 

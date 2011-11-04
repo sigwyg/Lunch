@@ -100,8 +100,7 @@ header hgroup {
     border-right: 2px dotted #f0f0f0;
     width: 120px;
 }
-#mapSwitch li a,
-#mapSwitch li a:visited {
+#mapSwitch li a {
     position: relative;
     display: block;
     width: 100px;
@@ -269,7 +268,7 @@ aside:before {
 }
 
 #GoogleMaps {
-    width: 970px;
+    width: 965px;
     height: 330px;
     border: 5px solid #fff;
     margin: 0 auto;
