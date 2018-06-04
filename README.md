@@ -1,3 +1,6 @@
+This project is **deprecated**.
+Starting on 2018-06-11, all projects using Google Maps need to enable billing with a credit card and need to have a valid API key for all projects.  
+
 # Lunch
 
  1. Get Flickr-photosets
